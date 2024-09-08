@@ -6,10 +6,12 @@ import com.codewithbappi.blog.payloads.UserDto;
 import com.codewithbappi.blog.repositories.UserRepo;
 import com.codewithbappi.blog.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers(Integer userId) {
+    public List<UserDto> getAllUsers() {
 
         List<User> users= this.userRepo.findAll();
 
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
+        user.setAbout(userDto.getAbout());
         return user;
     }
 
