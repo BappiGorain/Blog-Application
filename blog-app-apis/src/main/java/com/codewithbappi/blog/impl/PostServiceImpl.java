@@ -1,17 +1,49 @@
 package com.codewithbappi.blog.impl;
 
+import com.codewithbappi.blog.Exceptions.ResourceNotFoundException;
+import com.codewithbappi.blog.entities.Category;
 import com.codewithbappi.blog.entities.Post;
+import com.codewithbappi.blog.entities.User;
 import com.codewithbappi.blog.payloads.PostDto;
+import com.codewithbappi.blog.repositories.CategoryRepo;
+import com.codewithbappi.blog.repositories.PostRepo;
+import com.codewithbappi.blog.repositories.UserRepo;
 import com.codewithbappi.blog.services.PostService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
+@Service
 public class PostServiceImpl implements PostService
 {
+    @Autowired
+    private PostRepo postRepo;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private CategoryRepo categoryRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public Post createPost(PostDto postDto) {
-        return null;
+    public PostDto createPost(PostDto postDto, Integer userId, Integer categoryId)
+    {
+        User user = this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User","Id",userId));
+        Category category = this.categoryRepo.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category","Id",categoryId));
+        Post post = this.modelMapper.map(postDto,Post.class);
+        post.setImageName("Default.png");
+        post.setAddedDate(new Date());
+        post.setUser(user);
+        post.setCategory(category);
+
+        Post newPost = this.postRepo.save(post);
+        return this.modelMapper.map(newPost, PostDto.class);
     }
 
     @Override
