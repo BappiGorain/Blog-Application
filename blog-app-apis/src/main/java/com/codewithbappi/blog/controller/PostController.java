@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/")
 public class PostController
@@ -19,5 +21,19 @@ public class PostController
     {
         PostDto createdPost = this.postService.createPost(postDto,userId,categoryId);
         return new ResponseEntity<PostDto> (createdPost, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/{userId}/posts")
+    public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable("userId") Integer userId)
+    {
+        List<PostDto> returnedPosts = this.postService.getPostsByUser(userId);
+        return new ResponseEntity<List<PostDto>>(returnedPosts, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{categoryId}/posts")
+    public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable("categoryId") Integer categoryId)
+    {
+        List<PostDto> returnedPosts = this.postService.getPostsByCategory(categoryId);
+        return new ResponseEntity<List<PostDto>>(returnedPosts, HttpStatus.OK);
     }
 }
