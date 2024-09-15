@@ -53,18 +53,23 @@ public class PostServiceImpl implements PostService
     }
 
     @Override
-    public void deletePost(Integer postId) {
-
+    public void deletePost(Integer postId)
+    {
+        this.postRepo.deleteById(postId);
     }
 
     @Override
-    public List<Post> getAllPost() {
-        return List.of();
+    public List<Post> getAllPost()
+    {
+        List<Post> posts= this.postRepo.getAll();
+        return psots;
     }
 
     @Override
-    public Post getPostById(Integer postId) {
-        return null;
+    public Post getPostById(Integer postId)
+    {
+        Post post = this.postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","Id",postId));
+        return post;
     }
 
     @Override
@@ -85,7 +90,8 @@ public class PostServiceImpl implements PostService
     }
 
     @Override
-    public List<Post> searchPosts(String keyword) {
+    public List<Post> searchPosts(String keyword)
+    {
         return List.of();
     }
 }
