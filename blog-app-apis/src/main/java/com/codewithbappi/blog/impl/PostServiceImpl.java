@@ -4,6 +4,7 @@ import com.codewithbappi.blog.Exceptions.ResourceNotFoundException;
 import com.codewithbappi.blog.entities.Category;
 import com.codewithbappi.blog.entities.Post;
 import com.codewithbappi.blog.entities.User;
+import com.codewithbappi.blog.payloads.ApiResponse;
 import com.codewithbappi.blog.payloads.PostDto;
 import com.codewithbappi.blog.repositories.CategoryRepo;
 import com.codewithbappi.blog.repositories.PostRepo;
@@ -48,14 +49,21 @@ public class PostServiceImpl implements PostService
     }
 
     @Override
-    public PostDto updatePost(PostDto postDto, Integer postId) {
-        return null;
+    public PostDto updatePost(PostDto postDto, Integer postId)
+    {
+        Post post =  this.postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post", "found", postId));
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+        post.setImageName(postDto.getImageName());
+        Post updatedPost = this.postRepo.save(post);
+        return this.modelMapper.map(updatedPost, PostDto.class);
     }
 
     @Override
     public void deletePost(Integer postId)
     {
-        this.postRepo.deleteById(postId);
+        Post post =  this.postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post", "found", postId));
+        this.postRepo.delete(post);
     }
 
     @Override
@@ -95,4 +103,7 @@ public class PostServiceImpl implements PostService
     {
         return List.of();
     }
+
+
+
 }
