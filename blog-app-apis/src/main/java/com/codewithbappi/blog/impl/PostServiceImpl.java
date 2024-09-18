@@ -4,7 +4,6 @@ import com.codewithbappi.blog.Exceptions.ResourceNotFoundException;
 import com.codewithbappi.blog.entities.Category;
 import com.codewithbappi.blog.entities.Post;
 import com.codewithbappi.blog.entities.User;
-import com.codewithbappi.blog.payloads.ApiResponse;
 import com.codewithbappi.blog.payloads.PostDto;
 import com.codewithbappi.blog.repositories.CategoryRepo;
 import com.codewithbappi.blog.repositories.PostRepo;
@@ -12,6 +11,9 @@ import com.codewithbappi.blog.repositories.UserRepo;
 import com.codewithbappi.blog.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -67,9 +69,15 @@ public class PostServiceImpl implements PostService
     }
 
     @Override
-    public List<PostDto> getAllPost()
+    public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize)
     {
-        List<Post> posts= this.postRepo.findAll();
+
+        Pageable p = PageRequest.of(pageSize, pageNumber);
+
+         Page<Post> pagePost = this.postRepo.findAll(p);
+         List<Post> posts = pagePost.getContent();
+
+
         List<PostDto> postDtos = posts.stream().map((post)->this.modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
         return postDtos;
     }
