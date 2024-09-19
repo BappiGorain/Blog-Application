@@ -5,6 +5,7 @@ import com.codewithbappi.blog.entities.Category;
 import com.codewithbappi.blog.entities.Post;
 import com.codewithbappi.blog.entities.User;
 import com.codewithbappi.blog.payloads.PostDto;
+import com.codewithbappi.blog.payloads.PostResponse;
 import com.codewithbappi.blog.repositories.CategoryRepo;
 import com.codewithbappi.blog.repositories.PostRepo;
 import com.codewithbappi.blog.repositories.UserRepo;
@@ -69,17 +70,25 @@ public class PostServiceImpl implements PostService
     }
 
     @Override
-    public List<PostDto> getAllPost(Integer pageNumber, Integer pageSize)
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize)
     {
 
-        Pageable p = PageRequest.of(pageSize, pageNumber);
+        Pageable p = PageRequest.of(pageNumber, pageSize);
 
          Page<Post> pagePost = this.postRepo.findAll(p);
          List<Post> posts = pagePost.getContent();
 
 
         List<PostDto> postDtos = posts.stream().map((post)->this.modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
-        return postDtos;
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(postDtos);
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElement(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return postResponse;
     }
 
     @Override
