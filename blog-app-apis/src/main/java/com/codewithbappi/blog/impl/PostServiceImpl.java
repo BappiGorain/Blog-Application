@@ -78,7 +78,6 @@ public class PostServiceImpl implements PostService
          Page<Post> pagePost = this.postRepo.findAll(p);
          List<Post> posts = pagePost.getContent();
 
-
         List<PostDto> postDtos = posts.stream().map((post)->this.modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();

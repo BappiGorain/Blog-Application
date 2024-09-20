@@ -3,24 +3,28 @@ package com.codewithbappi.blog.impl;
 import com.codewithbappi.blog.Exceptions.ResourceNotFoundException;
 import com.codewithbappi.blog.entities.User;
 import com.codewithbappi.blog.payloads.UserDto;
+import com.codewithbappi.blog.payloads.UserResponse;
 import com.codewithbappi.blog.repositories.UserRepo;
 import com.codewithbappi.blog.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService
+{
 
     @Autowired
     private UserRepo userRepo;
 
     @Autowired
     private ModelMapper modelMapper;
-
 
     @Override
     public UserDto createUser(UserDto userDto)
@@ -31,7 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto,Integer userId) {
+    public UserDto updateUser(UserDto userDto,Integer userId)
+    {
 
         User user = this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","Id",userId));
 
@@ -51,14 +56,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public UserResponse getAllUsers(Integer pageNumber, Integer pageSize)
+    {
+        Pageable p = PageRequest.of(pageNumber,pageSize);
+        Page<User> userPost = this.userRepo.findAll(p);
+        List<User> users = userPost.getContent();
 
-        List<User> users= this.userRepo.findAll();
+        List<UserDto> userDtos = users.stream().map((user)->this.modelMapper.map(user,UserDto.class)).collect(Collectors.toList());
 
-        List<UserDto> userDtos = users.stream().map(user->this.userToDto(user)).collect(Collectors.toList());
-
-
-        return userDtos;
+        UserResponse userResponse = new UserResponse();
+        
+        userResponse.setUsers(userDtos);
+        userResponse.setPageNumber(userPost.getNumber());
+        userResponse.setPageSize(userPost.getSize());
+        userResponse.setTotalPages(userPost.getTotalPages());
+        userResponse.setTotalElements(userPost.getTotalElements());
+        userResponse.setLastPage(userPost.isLast());
+        
+        return userResponse;
     }
 
     @Override

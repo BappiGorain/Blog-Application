@@ -2,14 +2,13 @@ package com.codewithbappi.blog.controller;
 
 import com.codewithbappi.blog.payloads.ApiResponse;
 import com.codewithbappi.blog.payloads.UserDto;
+import com.codewithbappi.blog.payloads.UserResponse;
 import com.codewithbappi.blog.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -46,11 +45,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>>  getAllUsers()
+    public ResponseEntity<UserResponse>  getAllUsers(@RequestParam(value = "pageNumber",defaultValue = "0", required = false) Integer pageNumber,
+                                                     @RequestParam(value = "pageSize",defaultValue = "4", required = false) Integer pageSize)
     {
-        List<UserDto> usersDto = this.userService.getAllUsers();
+        UserResponse userResponse = this.userService.getAllUsers(pageNumber, pageSize);
 
-        return new ResponseEntity<List<UserDto>>(usersDto,HttpStatus.OK);
+        return new ResponseEntity<UserResponse>(userResponse,HttpStatus.OK);
     }
 
     // Delete -> Delete user
@@ -61,6 +61,5 @@ public class UserController {
         this.userService.deleteUser(id);
         return new ResponseEntity<ApiResponse>(new ApiResponse("User Deleted successfully",true),HttpStatus.OK);
     }
-
 
 }
