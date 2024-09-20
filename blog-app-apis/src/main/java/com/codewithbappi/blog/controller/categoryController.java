@@ -1,15 +1,13 @@
 package com.codewithbappi.blog.controller;
 
-import com.codewithbappi.blog.entities.Category;
 import com.codewithbappi.blog.payloads.ApiResponse;
 import com.codewithbappi.blog.payloads.CategoryDto;
+import com.codewithbappi.blog.payloads.CategoryResponse;
 import com.codewithbappi.blog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")  // maps to "/api/category" in the URL
@@ -63,10 +61,11 @@ public class categoryController
 
     // Get all categories
     @GetMapping("/")
-    public ResponseEntity<List<CategoryDto>> getAllCategory()
+    public ResponseEntity<CategoryResponse> getAllCategory(@RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+                                                           @RequestParam(value = "pageSize", defaultValue = "4", required = false)Integer pageSize)
     {
-        List<CategoryDto> returnedCategories = this.categoryService.getAllCategory();
+        CategoryResponse categoryResponse = this.categoryService.getAllCategory(pageNumber,pageSize);
 
-        return new ResponseEntity<List<CategoryDto>>(returnedCategories, HttpStatus.OK);
+        return new ResponseEntity<CategoryResponse>(categoryResponse, HttpStatus.OK);
     }
 }

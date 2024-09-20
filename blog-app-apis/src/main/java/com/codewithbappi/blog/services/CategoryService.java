@@ -1,9 +1,7 @@
 package com.codewithbappi.blog.services;
 
-import com.codewithbappi.blog.entities.Category;
 import com.codewithbappi.blog.payloads.CategoryDto;
-
-import java.util.List;
+import com.codewithbappi.blog.payloads.CategoryResponse;
 
 public interface CategoryService
 {
@@ -21,6 +19,6 @@ public interface CategoryService
 
 
     // get all
-    List<CategoryDto> getAllCategory();
+    CategoryResponse getAllCategory(Integer pageNumber, Integer pageSize);
 
 }

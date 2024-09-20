@@ -53,25 +53,25 @@ public class UserServiceImpl implements UserService
 
         User user = this.userRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("User "," Id ",id));
         return this.userToDto(user);
-    }
+}
 
     @Override
     public UserResponse getAllUsers(Integer pageNumber, Integer pageSize)
     {
         Pageable p = PageRequest.of(pageNumber,pageSize);
-        Page<User> userPost = this.userRepo.findAll(p);
-        List<User> users = userPost.getContent();
+        Page<User> userPage = this.userRepo.findAll(p);
+        List<User> users = userPage.getContent();
 
         List<UserDto> userDtos = users.stream().map((user)->this.modelMapper.map(user,UserDto.class)).collect(Collectors.toList());
 
         UserResponse userResponse = new UserResponse();
         
         userResponse.setUsers(userDtos);
-        userResponse.setPageNumber(userPost.getNumber());
-        userResponse.setPageSize(userPost.getSize());
-        userResponse.setTotalPages(userPost.getTotalPages());
-        userResponse.setTotalElements(userPost.getTotalElements());
-        userResponse.setLastPage(userPost.isLast());
+        userResponse.setPageNumber(userPage.getNumber());
+        userResponse.setPageSize(userPage.getSize());
+        userResponse.setTotalPages(userPage.getTotalPages());
+        userResponse.setTotalElements(userPage.getTotalElements());
+        userResponse.setLastPage(userPage.isLast());
         
         return userResponse;
     }
