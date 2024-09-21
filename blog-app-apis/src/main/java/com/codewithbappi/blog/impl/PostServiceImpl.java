@@ -56,6 +56,7 @@ public class PostServiceImpl implements PostService
     public PostDto updatePost(PostDto postDto, Integer postId)
     {
         Post post =  this.postRepo.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post", "found", postId));
+        post.setId(postId);
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
         post.setImageName(postDto.getImageName());
@@ -71,11 +72,20 @@ public class PostServiceImpl implements PostService
     }
 
     @Override
-    public PostResponse getAllPost(Integer pageNumber, Integer pageSize,String sortBy)
+    public PostResponse getAllPost(Integer pageNumber, Integer pageSize,String sortBy,String sortDirection)
     {
 
-        Pageable p = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Sort sort = null;
+        if(sortDirection.equalsIgnoreCase("asc"))
+        {
+            sort = Sort.by(sortBy).ascending();
+        }
+        else
+        {
+            sort = Sort.by(sortBy).descending();
+        }
 
+        Pageable p = PageRequest.of(pageNumber, pageSize, sort);
          Page<Post> pagePost = this.postRepo.findAll(p);
          List<Post> posts = pagePost.getContent();
 

@@ -11,6 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PostDto
 {
+    private Integer id;
     private String title;
 
     private String content;
@@ -22,7 +23,5 @@ public class PostDto
     private CategoryDto category;
 
     private UserDto user;
-
-
 
 }
