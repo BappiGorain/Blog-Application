@@ -8,8 +8,8 @@ import com.codewithbappi.blog.repositories.PostRepo;
 import com.codewithbappi.blog.services.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.xml.stream.events.Comment;
+
 
 public class CommentServiceImpl implements CommentService
 {
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService
     @Override
     public void deleteComment(Integer commentId)
     {
-        com.codewithbappi.blog.entities.Comment com = this.commentRepo.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comment","Id",commentId));
+        Comment com = this.commentRepo.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comment","Id",commentId));
         this.commentRepo.delete(com);
     }
 }
