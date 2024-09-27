@@ -6,9 +6,9 @@ import com.codewithbappi.blog.payloads.CommentDto;
 import com.codewithbappi.blog.repositories.CommentRepo;
 import com.codewithbappi.blog.repositories.PostRepo;
 import com.codewithbappi.blog.services.CommentService;
+import com.codewithbappi.blog.entities.Comment;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.xml.stream.events.Comment;
 
 
 public class CommentServiceImpl implements CommentService
@@ -34,7 +34,6 @@ public class CommentServiceImpl implements CommentService
         Comment savedComment = this.commentRepo.save(comment);
 
         return this.modelMapper.map(savedComment, CommentDto.class);
-        return commentDto;
     }
 
     @Override
