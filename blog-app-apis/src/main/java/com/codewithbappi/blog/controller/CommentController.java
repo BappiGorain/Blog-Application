@@ -3,6 +3,7 @@ package com.codewithbappi.blog.controller;
 import com.codewithbappi.blog.payloads.ApiResponse;
 import com.codewithbappi.blog.payloads.CommentDto;
 import com.codewithbappi.blog.services.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController
 {
 
+    @Autowired
     private CommentService commentService;
 
     @PostMapping("/post/{postId}/comments")
