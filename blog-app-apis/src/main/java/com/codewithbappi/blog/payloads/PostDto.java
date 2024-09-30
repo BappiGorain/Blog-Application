@@ -1,5 +1,6 @@
 package com.codewithbappi.blog.payloads;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,4 +29,9 @@ public class PostDto
 
     private Set<CommentDto> comments = new HashSet<>();
 
+    @Data
+    public static class JwtAuthResponse
+    {
+        private String token;
+    }
 }
