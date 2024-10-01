@@ -1,5 +1,10 @@
 package com.codewithbappi.blog.payloads;
 
-public class
-RoleDto {
+import lombok.Data;
+
+@Data
+public class RoleDto
+{
+    private int id;
+    private String name;
 }

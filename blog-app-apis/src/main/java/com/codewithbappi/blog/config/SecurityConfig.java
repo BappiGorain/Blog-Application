@@ -45,7 +45,7 @@ public class SecurityConfig
                 .antMatchers("/api/v1/auth/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET)
-                .permitAll()
+                .permitAll()v
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling()
