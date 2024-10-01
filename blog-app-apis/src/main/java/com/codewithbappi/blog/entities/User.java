@@ -24,6 +24,7 @@ public class User
     private String email;
     private String password;
     private String about;
+    private Integer roles;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();

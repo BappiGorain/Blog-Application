@@ -1,9 +1,11 @@
 package com.codewithbappi.blog.impl;
 
 import com.codewithbappi.blog.Exceptions.ResourceNotFoundException;
+import com.codewithbappi.blog.config.AppConstants;
 import com.codewithbappi.blog.entities.User;
 import com.codewithbappi.blog.payloads.UserDto;
 import com.codewithbappi.blog.payloads.UserResponse;
+import com.codewithbappi.blog.repositories.RoleRepo;
 import com.codewithbappi.blog.repositories.UserRepo;
 import com.codewithbappi.blog.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,9 @@ public class UserServiceImpl implements UserService
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleRepo roleRepo;
+
     @Override
     public UserDto registerNewUser(UserDto userDto) {
 
@@ -36,7 +42,14 @@ public class UserServiceImpl implements UserService
 
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
+        //roles
+        Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
 
+        user.getRoles().add(role);
+
+        User savedUser = this.userRepo.save(user);
+
+        return this.modelMapper.map(savedUser,UserDto.class);
 
 
     }
