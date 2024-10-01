@@ -12,5 +12,4 @@ public interface UserService
     UserResponse getAllUsers(Integer pageNumber, Integer pageSize);
     void deleteUser(Integer userId);
 
-
 }

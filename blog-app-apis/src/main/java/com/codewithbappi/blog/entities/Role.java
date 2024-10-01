@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Roles
+public class Role
 {
     @Id
     private int id;

@@ -3,7 +3,9 @@ package com.codewithbappi.blog.controller;
 import com.codewithbappi.blog.Exceptions.ApiException;
 import com.codewithbappi.blog.payloads.JwtAuthRequest;
 import com.codewithbappi.blog.payloads.PostDto;
+import com.codewithbappi.blog.payloads.UserDto;
 import com.codewithbappi.blog.security.JwtTokenHelper;
+import com.codewithbappi.blog.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class AuthController
 
     @Autowired
     private JwtTokenHelper jwtTokenHelper;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -54,6 +59,14 @@ public class AuthController
             System.out.println("Invalid username/password");
             throw new ApiException("Invalid username/Password");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> resgisterUser(@RequestBody UserDto userDto)
+    {
+        UserDto registerNewUser = this.userService.registerNewUser(userDto);
+
+        return new ResponseEntity<>(registerNewUser, HttpStatus.CREATED);
 
     }
 }
