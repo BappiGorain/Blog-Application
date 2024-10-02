@@ -10,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import com.codewithbappi.blog.entities.Role;
 import java.util.List;
 
 @SpringBootApplication
@@ -44,16 +44,17 @@ public class BlogAppApisApplication implements CommandLineRunner
 			role.setName("ADMIN_USER");
 			role.setId(AppConstants.ADMIN_USER);
 
-			Role role1 = new Role();List<Role> roles = List.of(role,role1);
-
+			Role role1 = new Role();
 			role1.setName("ADMIN_USER");
 			role1.setId(AppConstants.NORMAL_USER);
+
+			List<Role> roles = List.of(role,role1);
 
 
 			List<Role> result = this.roleRepo.saveAll(roles);
 
 			result.forEach(r->{
-				System.out.println(r.getName() + " ");
+				System.out.println(r.getName());
 			});
 		} catch (Exception e) {
 			e.printStackTrace();

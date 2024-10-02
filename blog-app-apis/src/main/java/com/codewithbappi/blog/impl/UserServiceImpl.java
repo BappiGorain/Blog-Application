@@ -15,8 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.management.relation.Role;
+import com.codewithbappi.blog.entities.Role;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,10 +46,9 @@ public class UserServiceImpl implements UserService
 
         user.getRoles().add(role);
 
-        User savedUser = this.userRepo.save(user);
+        User newUser = this.userRepo.save(user);
 
-        return this.modelMapper.map(savedUser,UserDto.class);
-
+        return this.modelMapper.map(newUser,UserDto.class);
 
     }
 
