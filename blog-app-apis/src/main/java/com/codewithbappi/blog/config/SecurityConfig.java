@@ -1,5 +1,6 @@
 package com.codewithbappi.blog.config;
 
+import com.codewithbappi.blog.security.CustomUserDetailService;
 import com.codewithbappi.blog.security.JwtAuthenticationEntryPoint;
 import com.codewithbappi.blog.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,6 +30,9 @@ public class SecurityConfig
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
+    private CustomUserDetailService customUserDetailService;
+
+    @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Autowired
@@ -37,7 +42,8 @@ public class SecurityConfig
     private PasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+    {
         http.
                 csrf()
                 .disable()
@@ -45,7 +51,7 @@ public class SecurityConfig
                 .antMatchers("/api/v1/auth/**")
                 .permitAll()
                 .antMatchers(HttpMethod.GET)
-                .permitAll()v
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling()
@@ -59,6 +65,7 @@ public class SecurityConfig
         DefaultSecurityFilterChain defaultSecurityFilterChain =  http.build();
         return defaultSecurityFilterChain;
     }
+
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider()
@@ -74,4 +81,9 @@ public class SecurityConfig
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder()
+    {
+        return new BCryptPasswordEncoder();
+    }
 }
