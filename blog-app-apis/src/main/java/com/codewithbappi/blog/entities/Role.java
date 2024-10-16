@@ -1,11 +1,13 @@
 package com.codewithbappi.blog.entities;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
+//import org.springframework.data.annotation.Id;
 
-@Entity
 @Data
+@Entity
 public class Role
 {
     @Id

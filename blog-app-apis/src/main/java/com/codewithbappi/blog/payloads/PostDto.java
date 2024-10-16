@@ -1,17 +1,17 @@
 package com.codewithbappi.blog.payloads;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostDto
 {
     private Integer id;

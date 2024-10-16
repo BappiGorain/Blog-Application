@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Post
+public class Posts
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -30,7 +30,7 @@ public class User implements UserDetails
     private Integer role;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Post> posts = new ArrayList<>();
+    private List<Posts> posts = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user",referencedColumnName = "id"),

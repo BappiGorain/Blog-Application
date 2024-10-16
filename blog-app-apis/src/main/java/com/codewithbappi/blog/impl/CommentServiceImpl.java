@@ -1,7 +1,7 @@
 package com.codewithbappi.blog.impl;
 
 import com.codewithbappi.blog.Exceptions.ResourceNotFoundException;
-import com.codewithbappi.blog.entities.Post;
+import com.codewithbappi.blog.entities.Posts;
 import com.codewithbappi.blog.payloads.CommentDto;
 import com.codewithbappi.blog.repositories.CommentRepo;
 import com.codewithbappi.blog.repositories.PostRepo;
@@ -27,10 +27,10 @@ public class CommentServiceImpl implements CommentService
     @Override
     public CommentDto createComment(CommentDto commentDto, Integer postId)
     {
-        Post post = this.postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","Id", postId));
+        Posts posts = this.postRepo.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","Id", postId));
         Comment comment = this.modelMapper.map(commentDto, Comment.class);
 
-        comment.setPost(post);
+        comment.setPosts(posts);
 
         Comment savedComment = this.commentRepo.save(comment);
 
